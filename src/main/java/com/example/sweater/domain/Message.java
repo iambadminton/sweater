@@ -15,6 +15,7 @@ public class Message {
 
     private String text;
     private String tag;
+    private String filename;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -41,6 +42,14 @@ public class Message {
     // создаем пустой конструктор, иначе Спринг и все стоящие за ним фреймворки
     // не сможет создать данный класс
     public Message() {
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public Integer getId() {
