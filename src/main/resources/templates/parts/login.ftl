@@ -12,9 +12,17 @@
             <input class="form-control" type="password" name="password" placeholder="Password"/>
         </div>
     </div>
+    <#if isRegisterForm>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label"> Email:</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="email" name="email" placeholder="some@some.com" value="${email!''}"/>
+        </div>
+    </div>
+    </#if>
     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
     <#if !isRegisterForm><a href="/registration">Add new user</a></#if>
-    <button type="submit" class="btn btn-primary" class="btn btn-primary"><#if isRegisterForm>Create<#else >Sign in</#if></button>
+    <button type="submit" class="btn btn-primary"><#if isRegisterForm>Create<#else >Sign in</#if></button>
 
 </form>
 </#macro>
