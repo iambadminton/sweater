@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
->
-<head>
-    <title>Spring Security Example </title>
-</head>
-<body>
-Login page
+<#import "parts/common.ftl" as c>
+<#import "parts/login.ftl" as l>
 
-<a href="/registration">Add new user</a>
-</body>
-</html>
+<@c.page>
+    ${message?if_exists}
+<@l.login "/login" false/>
+</@c.page>

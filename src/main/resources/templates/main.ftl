@@ -1,39 +1,57 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-</head>
-<body>
-<div>
-    <div>
-        <form action="/logout" method="post">
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-            <input type="submit" value="Sign Out"/>
+<#import "parts/common.ftl" as c>
 
+
+<@c.page>
+    <div class="input-group mb-3">
+        <form method="get" action="/main" class="row row-cols-lg-auto">
+            <div><input type="text" class="form-control" name="filter" value="${filter?if_exists}"></div>
+            <button type="submit" class="btn btn-primary ">Найти</button>
         </form>
     </div>
-    <form method="post">
-        <input type="text" name="text" placeholder="Введите сообщение">
-        <input type="text" name="tag" placeholder="Тэг">
-        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-        <button type="submit">Добавить</button>
-    </form>
-</div>
-<div>Список сообщений</div>
-<form method="post" action="filter">
-    <input type="text" name="filter">
-    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-    <button type="submit">Найти</button>
-</form>
 
-{{#messages}}
-    <div>
-        <b>{{id}}</b>
-        <span>{{text}}</span>
-        <i>{{tag}}</i>
-        <strong>{{authorName}}</strong>
+    <a class="btn btn-primary mb-3" data-bs-toggle="collapse" href="#newMessage" role="button" aria-expanded="false"
+       aria-controls="newMessage">
+        Add new message
+    </a>
+    <div class="collapse" id="newMessage">
+        <form method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <div class="col-6">
+                    <input class="form-control" type="text" name="text" placeholder="Введите сообщение"/>
+                </div>
+                <div class="col-6">
+                    <input class="form-control" type="text" name="tag" placeholder="Тэг">
+                </div>
+            </div>
+            <div class="col-12 mb-3">
+                <input class="form-control" type="file" name="file">
+            </div>
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+            <button class="btn btn-primary mb-3" type="submit">Добавить</button>
+        </form>
     </div>
-{{/messages}}
-</body>
-</html>
+
+
+    <div class="row row-cols-3">
+        <#list messages as message>
+            <div class="card my-3 ms-3 me-3" style="width: 18rem;">
+                <div>
+                    <#if message.filename??>
+                        <img class="card-img-top" src="/img/${message.filename}">
+                    </#if>
+                </div>
+                <b>${message.id}</b>
+                <div class="m-2">
+                    <span>${message.text}</span>
+                    <i>${message.tag}</i>
+                </div>
+                <div class="card-footer">
+                    ${message.authorName}
+                </div>
+
+
+            </div>
+
+        </#list>
+    </div>
+</@c.page>
