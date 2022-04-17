@@ -13,14 +13,27 @@
        aria-controls="newMessage">
         Add new message
     </a>
-    <div class="collapse" id="newMessage">
+    <div class="collapse <#if message??>show</#if>" id="newMessage">
         <form method="post" enctype="multipart/form-data">
             <div class="row mb-3">
                 <div class="col-6">
-                    <input class="form-control" type="text" name="text" placeholder="Введите сообщение"/>
+                    <input class="form-control ${(textError??)?string('is-invalid', '')}" type="text"
+                           value="<#if message??>${message.text}</#if>"
+                           name="text" placeholder="Введите сообщение"/>
+                    <#if textError??>
+                        <div class="invalid-feedback">
+                            ${textError}
+                        </div>
+                    </#if>
                 </div>
                 <div class="col-6">
-                    <input class="form-control" type="text" name="tag" placeholder="Тэг">
+                    <input class="form-control" type="text" name="tag"
+                           value="<#if message??>${message.tag}</#if>" placeholder="Тэг">
+                    <#if tagError??>
+                        <div class="invalid-feedback">
+                            ${tagError}
+                        </div>
+                    </#if>
                 </div>
             </div>
             <div class="col-12 mb-3">
