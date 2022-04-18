@@ -89,7 +89,11 @@ public class MainController {
         Set<Message> messages = user.getMessages();
         model.addAttribute("messages", messages);
         model.addAttribute("message", message);
+        model.addAttribute("subscriptionsCount", user.getSubscriptions().size());
+        model.addAttribute("subscribersCount", user.getSubscribers().size());
+        model.addAttribute("userChannel", user);
         model.addAttribute("isCurrentUser", currentUser.equals(user));
+        model.addAttribute("isSubscriber", user.getSubscribers().contains(currentUser));
         return "userMessages";
     }
 
@@ -108,20 +112,22 @@ public class MainController {
             if (!ObjectUtils.isEmpty(text)) {
                 message.setText(text);
             }
-
+          
             if (!ObjectUtils.isEmpty(tag)) {
                 message.setTag(tag);
             }
 
             saveFile(message, file);
-
             messageRepo.save(message);
         }
 
         return "redirect:/user-messages/" + user.getId();
 
     }
+    
 
+    
+  
     private void saveFile(@ModelAttribute @Valid Message message,
                           @RequestParam("file") MultipartFile file) throws IOException {
         if (file != null && !file.getOriginalFilename().isEmpty()) {
@@ -139,6 +145,8 @@ public class MainController {
 
         }
     }
+    
+    
 
 
 }
