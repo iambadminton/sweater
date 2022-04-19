@@ -4,12 +4,12 @@
 
     <form action="/user" method="post">
         <input type="hidden" name="userID" value="${user.id}">
-        <input type="hidden" value="${_csrf.token}" name="_csrf">
-        <input type="text" name="username" value="${user.username}">
+        <input type="hidden" value="${_csrf.token}" name="_csrf"/>
+        <input type="text" name="username" value="${user.username}"/>
         <#list roles as role>
             <div>
                 <label>
-                    <input type="checkbox" name="${role}" ${user.roles?seq_contains(role)?string("checked", "")}>${role}
+                    <input type="checkbox" name="${role}" ${user.roles?seq_contains(role)?string("checked", "")}/>${role}
                 </label>
             </div>
         <#else >

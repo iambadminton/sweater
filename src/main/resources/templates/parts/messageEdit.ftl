@@ -18,7 +18,7 @@
             </div>
             <div class="col-6">
                 <input class="form-control" type="text" name="tag"
-                       value="<#if message??>${message.tag}</#if>" placeholder="Тэг">
+                       value="<#if message??>${message.tag}</#if>" placeholder="Тэг"/>
                 <#if tagError??>
                     <div class="invalid-feedback">
                         ${tagError}
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="col-12 mb-3">
-            <input class="form-control" type="file" name="file">
+            <input class="form-control" type="file" name="file"/>
         </div>
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         <input type="hidden" name="id" value="<#if message??>${message.id}</#if>"/>

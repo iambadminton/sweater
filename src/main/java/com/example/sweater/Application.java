@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Application {
 
     public static void main(String[] args) {
+
 //        System.setProperty("spring.config.location",
 //                "file:///D:/SpringProjects/sweater_secret_properties/application.properties");
 
