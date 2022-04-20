@@ -5,6 +5,10 @@ import com.example.sweater.domain.User;
 import com.example.sweater.repos.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,17 +42,22 @@ public class MainController {
     private String uploadPath;
 
     @GetMapping("/main")
-    public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
-        Iterable<Message> messages = messageRepo.findAll();
+    public String main(
+            @RequestParam(required = false, defaultValue = "") String filter,
+            Model model,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
+                    Pageable pageable) {
+        Page<Message> page;
 
 
         if (filter != null && !(filter.isEmpty())) {
-            messages = messageRepo.findByTag(filter);
+            page = messageRepo.findByTag(filter, pageable);
         } else {
-            messages = messageRepo.findAll();
+            page = messageRepo.findAll(pageable);
         }
 
-        model.addAttribute("messages", messages);
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/main");
         model.addAttribute("filter", filter);
 
         return "main";
@@ -60,7 +69,9 @@ public class MainController {
             @Valid @ModelAttribute Message message,
             BindingResult bindingResult,
             Model model,
-            @RequestParam("file") MultipartFile file) throws IOException {
+            @RequestParam("file") MultipartFile file,
+            @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC)
+                    Pageable pageable) throws IOException {
         message.setAuthor(user);
 
         if (bindingResult.hasErrors()) {
@@ -73,8 +84,9 @@ public class MainController {
             messageRepo.save(message);
             model.addAttribute("message", null);
         }
-        Iterable<Message> messages = messageRepo.findAll();
-        model.addAttribute("messages", messages);
+        Page<Message> page = messageRepo.findAll(pageable);
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/main");
         return "main";
     }
 
@@ -112,7 +124,7 @@ public class MainController {
             if (!ObjectUtils.isEmpty(text)) {
                 message.setText(text);
             }
-          
+
             if (!ObjectUtils.isEmpty(tag)) {
                 message.setTag(tag);
             }
@@ -124,10 +136,8 @@ public class MainController {
         return "redirect:/user-messages/" + user.getId();
 
     }
-    
 
-    
-  
+
     private void saveFile(@ModelAttribute @Valid Message message,
                           @RequestParam("file") MultipartFile file) throws IOException {
         if (file != null && !file.getOriginalFilename().isEmpty()) {
@@ -145,8 +155,6 @@ public class MainController {
 
         }
     }
-    
-    
 
 
 }
