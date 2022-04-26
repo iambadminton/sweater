@@ -4,7 +4,10 @@ import com.example.sweater.domain.Role;
 import com.example.sweater.domain.User;
 import com.example.sweater.repos.UserRepo;
 import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +45,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("3")
     void addUser() {
         User user = new User();
 
@@ -115,6 +119,28 @@ class UserServiceTest {
             int i = 0;
             int res = 1 / i;
         });
+    }
+
+
+    @ParameterizedTest
+    @ValueSource(strings  = {"madam", "radar", "women"})
+    @DisplayName("parameterized test")
+    public void checkPalindromTest(String str) {
+        assertTrue(isPalindrome(str));
+    }
+
+    public boolean isPalindrome(String text) {
+        String clean = text.replaceAll("\\s+", "").toLowerCase();
+        int length = clean.length();
+        int forward = 0;
+        int backward = length - 1;
+        while (backward > forward) {
+            char forwardChar = clean.charAt(forward++);
+            char backwardChar = clean.charAt(backward--);
+            if (forwardChar != backwardChar)
+                return false;
+        }
+        return true;
     }
 
 
