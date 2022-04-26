@@ -14,6 +14,8 @@
 
         <script src="https://www.google.com/recaptcha/api.js" async="async defer"></script>
 
+        <script src="https://kit.fontawesome.com/342b22057f.js" crossorigin="anonymous"></script>
+
         <title>Sweater</title>
     </head>
     <body>
